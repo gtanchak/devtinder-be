@@ -9,6 +9,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/user", (req, res) => {
+  console.log(req, "req");
   res.send("User from the server.");
 });
 
