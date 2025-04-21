@@ -4,13 +4,12 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
+app.get("/user", (req, res) => {
+  res.send([{ name: "Ghanshyam Tanchak" }]);
 });
 
-app.use("/user", (req, res) => {
-  console.log(req, "req");
-  res.send("User from the server.");
+app.post("/user", (req, res) => {
+  res.send("Post call success");
 });
 
 app.listen(PORT, () => {
