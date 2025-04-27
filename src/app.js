@@ -1,27 +1,28 @@
 const express = require("express");
+const { connectDB } = require("./config/database");
+const { User } = require("./models/user");
 
 const PORT = process.env.PORT || 3000;
 
 const app = express();
+// Convert JSON to js object
+app.use(express.json());
 
-app.use("/", (req, res, next) => {
-  console.log("middle ware");
-  if (req.url === "/user") {
-    res.send("by middleware");
-  } else {
-    next();
+app.post("/signup", (req, res) => {
+  const user = new User(req.body);
+  try {
+    user.save();
+    res.send("User created successfully.");
+  } catch (error) {
+    res.status(400).send("Something went wrong");
   }
 });
 
-app.get("/user", (req, res, next) => {
-  console.log("User request");
-  res.send("User request by API");
-});
-
-app.get("/post", (req, res, next) => {
-  next();
-  res.send("post request");
-});
-app.listen(PORT, () => {
-  console.log(`Server is running successfully on PORT ${PORT}`);
-});
+connectDB()
+  .then(() => {
+    console.log("Database connection successfully..");
+    app.listen(PORT, () => {
+      console.log(`Server is running successfully on PORT ${PORT}`);
+    });
+  })
+  .catch(() => console.log("Databse connection error"));
